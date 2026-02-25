@@ -1,0 +1,53 @@
+code_iata;nom;ville;pays;continent;latitude;longitude;type_aeroport
+CDG;Paris Charles de Gaulle;Paris;France;Europe;49.01;2.55;Hub
+ORY;Paris Orly;Paris;France;Europe;48.72;2.38;Hub
+MRS;Marseille Provence;Marseille;France;Europe;43.44;5.22;Domestique
+LYS;Lyon Saint-Exupéry;Lyon;France;Europe;45.73;5.08;Domestique
+TLS;Toulouse-Blagnac;Toulouse;France;Europe;43.63;1.36;Domestique
+NCE;Nice Côte d'Azur;Nice;France;Europe;43.66;7.22;Domestique
+BOD;Bordeaux-Mérignac;Bordeaux;France;Europe;44.83;-0.72;Domestique
+NTE;Nantes Atlantique;Nantes;France;Europe;47.15;-1.61;Domestique
+LHR;London Heathrow;Londres;Royaume-Uni;Europe;51.47;-0.45;Européen
+AMS;Amsterdam Schiphol;Amsterdam;Pays-Bas;Europe;52.31;4.76;Européen
+FRA;Frankfurt;Francfort;Allemagne;Europe;50.03;8.57;Européen
+FCO;Roma Fiumicino;Rome;Italie;Europe;41.8;12.24;Européen
+MAD;Madrid Barajas;Madrid;Espagne;Europe;40.5;-3.57;Européen
+BCN;Barcelona El Prat;Barcelone;Espagne;Europe;41.3;2.08;Européen
+LIS;Lisbon Portela;Lisbonne;Portugal;Europe;38.78;-9.14;Européen
+MUC;Munich Franz Josef Strauss;Munich;Allemagne;Europe;48.35;11.79;Européen
+VIE;Vienna Schwechat;Vienne;Autriche;Europe;48.11;16.57;Européen
+ZRH;Zurich Kloten;Zurich;Suisse;Europe;47.46;8.55;Européen
+CPH;Copenhagen Kastrup;Copenhague;Danemark;Europe;55.62;12.65;Européen
+ARN;Stockholm Arlanda;Stockholm;Suède;Europe;59.65;17.92;Européen
+ATH;Athens Eleftherios Venizelos;Athènes;Grèce;Europe;37.94;23.94;Européen
+IST;Istanbul Airport;Istanbul;Turquie;Europe;41.28;28.75;Européen
+JFK;New York JFK;New York;États-Unis;Amérique du Nord;40.64;-73.78;Long-courrier
+LAX;Los Angeles International;Los Angeles;États-Unis;Amérique du Nord;33.94;-118.41;Long-courrier
+SFO;San Francisco International;San Francisco;États-Unis;Amérique du Nord;37.62;-122.38;Long-courrier
+YUL;Montréal-Trudeau;Montréal;Canada;Amérique du Nord;45.47;-73.74;Long-courrier
+MIA;Miami International;Miami;États-Unis;Amérique du Nord;25.8;-80.29;Long-courrier
+ATL;Atlanta Hartsfield-Jackson;Atlanta;États-Unis;Amérique du Nord;33.64;-84.43;Long-courrier
+ORD;Chicago O'Hare;Chicago;États-Unis;Amérique du Nord;41.97;-87.91;Long-courrier
+GRU;São Paulo Guarulhos;São Paulo;Brésil;Amérique du Sud;-23.44;-46.47;Long-courrier
+GIG;Rio de Janeiro Galeão;Rio de Janeiro;Brésil;Amérique du Sud;-22.81;-43.25;Long-courrier
+BOG;Bogotá El Dorado;Bogotá;Colombie;Amérique du Sud;4.7;-74.15;Long-courrier
+EZE;Buenos Aires Ezeiza;Buenos Aires;Argentine;Amérique du Sud;-34.82;-58.54;Long-courrier
+CMN;Casablanca Mohammed V;Casablanca;Maroc;Afrique;33.37;-7.59;Moyen-courrier
+ALG;Alger Houari Boumediene;Alger;Algérie;Afrique;36.69;3.22;Moyen-courrier
+DKR;Dakar Blaise Diagne;Dakar;Sénégal;Afrique;14.67;-17.07;Long-courrier
+ABJ;Abidjan Félix-Houphouët-Boigny;Abidjan;Côte d'Ivoire;Afrique;5.26;-3.93;Long-courrier
+JNB;Johannesburg O.R. Tambo;Johannesburg;Afrique du Sud;Afrique;-26.14;28.25;Long-courrier
+NRT;Tokyo Narita;Tokyo;Japon;Asie;35.77;140.39;Long-courrier
+PVG;Shanghai Pudong;Shanghai;Chine;Asie;31.14;121.81;Long-courrier
+HKG;Hong Kong International;Hong Kong;Chine;Asie;22.31;113.92;Long-courrier
+ICN;Seoul Incheon;Séoul;Corée du Sud;Asie;37.46;126.44;Long-courrier
+BKK;Bangkok Suvarnabhumi;Bangkok;Thaïlande;Asie;13.69;100.75;Long-courrier
+SGN;Ho Chi Minh Tan Son Nhat;Ho Chi Minh-Ville;Vietnam;Asie;10.82;106.65;Long-courrier
+DEL;Delhi Indira Gandhi;New Delhi;Inde;Asie;28.56;77.1;Long-courrier
+SIN;Singapore Changi;Singapour;Singapour;Asie;1.36;103.99;Long-courrier
+DXB;Dubai International;Dubaï;Émirats Arabes Unis;Moyen-Orient;25.25;55.36;Long-courrier
+DOH;Doha Hamad;Doha;Qatar;Moyen-Orient;25.27;51.61;Long-courrier
+TLV;Tel Aviv Ben Gurion;Tel Aviv;Israël;Moyen-Orient;32.01;34.89;Moyen-courrier
+PTP;Pointe-à-Pitre Pôle Caraïbes;Pointe-à-Pitre;Guadeloupe;Caraïbes;16.27;-61.53;Long-courrier
+FDF;Fort-de-France Aimé Césaire;Fort-de-France;Martinique;Caraïbes;14.59;-61.0;Long-courrier
+RUN;La Réunion Roland Garros;Saint-Denis;La Réunion;Océan Indien;-20.89;55.51;Long-courrier
