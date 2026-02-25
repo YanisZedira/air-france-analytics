@@ -1,0 +1,96 @@
+<div align="center">
+
+# ✈️ Air France Analytics Platform
+
+### Plateforme de Data Analytics — Compagnie Aérienne
+
+![Air France](https://img.shields.io/badge/Air%20France-002157?style=for-the-badge&logo=airfrance&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+
+---
+
+**Dashboard interactif d'analyse des opérations d'Air France**
+*~60 000 vols • 52 aéroports • 131 avions • 22 000 enquêtes satisfaction*
+
+[🌐 **Voir le Dashboard**](https://VOTRE-USERNAME.github.io/airfrance-analytics/) • [📊 Dataset](#dataset) • [🛠️ Installation](#installation)
+
+</div>
+
+---
+
+## 📸 Aperçu
+
+| Vue d'ensemble | Réseau mondial | Modèle 3D |
+|:-:|:-:|:-:|
+| KPIs, tendances, heatmaps | Carte interactive des routes | Avion rotatif Three.js |
+
+| Ponctualité | Revenus & Yield | Satisfaction |
+|:-:|:-:|:-:|
+| OTP, causes de retard | CA, RASK, Top routes | NPS, Radar, par classe |
+
+---
+
+## 🚀 Fonctionnalités
+
+### 📊 7 Sections d'Analyse
+- **Vue d'ensemble** — KPIs clés, tendances mensuelles, heatmap activité
+- **Réseau & Routes** — Carte mondiale interactive, trafic par continent
+- **Flotte & Avion 3D** — Composition, âges, modèle 3D rotatif (Three.js)
+- **Ponctualité** — OTP, distribution des retards, causes, heatmap retards
+- **Revenus & Yield** — CA mensuel, yield par continent, scatter distance/revenu
+- **Satisfaction Client** — Radar multicritère, NPS, analyse par classe/fidélité
+- **Empreinte Carbone** — CO₂ mensuel, efficacité par appareil, intensité carbone
+
+### 🎨 Design & UX
+- 🌙 **Mode sombre / clair** avec transition fluide
+- 📱 **Responsive** — Desktop, tablette, mobile
+- ✨ **Animations GSAP** — Scroll animations, counters, transitions
+- 🎆 **Fond particules** — Réseau animé en arrière-plan
+- ⌨️ **Raccourcis clavier** — Touches 1-7 pour naviguer, T pour thème
+- 🔄 **Filtres dynamiques** — Année et type de courrier
+
+### 🛩️ Modèle 3D
+- Avion procédural avec **livrée Air France** (blanc, bleu marine, liseré rouge)
+- **5 modèles** : A350-900, 777-300ER, A320, 787-9, A330-200
+- **Rotation manuelle** (drag) et rotation automatique
+- Spécifications techniques dynamiques
+
+---
+
+## 📂 Dataset
+
+Généré par `generate_dataset.py` (Python/Pandas/NumPy) :
+
+| Fichier | Enregistrements | Description |
+|---------|---------------:|-------------|
+| `aeroports.csv` | 52 | Réseau aéroportuaire mondial |
+| `flotte.csv` | ~131 | Appareils avec specs détaillées |
+| `vols.csv` | ~60 000 | Vols Jan 2023 → Mai 2025 |
+| `satisfaction.csv` | 22 000 | Enquêtes satisfaction passagers |
+
+### Métriques calculées
+- **RPK** (Revenue Passenger Kilometer)
+- **ASK** (Available Seat Kilometer)
+- **Yield** (centimes € / RPK)
+- **RASK** (Revenue / ASK)
+- **OTP** (On-Time Performance < 15 min)
+- **NPS** (Net Promoter Score)
+- **Intensité carbone** (g CO₂ / pax·km)
+
+---
+
+## 🛠️ Installation
+
+### Prérequis
+- Python 3.8+ (pour générer le dataset)
+- Un navigateur web moderne
+
+### 1. Cloner le repo
+
+```bash
+git clone https://github.com/VOTRE-USERNAME/airfrance-analytics.git
+cd airfrance-analytics

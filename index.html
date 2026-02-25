@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air France • Analytics Platform</title>
+    <meta name="description" content="Plateforme d'analyse de données Air France — Réseau, Flotte, Performance, Satisfaction">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Libraries -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- LOADER -->
+    <!-- ============================================================ -->
+    <div id="loader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <svg viewBox="0 0 120 40" class="af-logo-svg">
+                    <text x="0" y="32" class="logo-text-air">AIR</text>
+                    <text x="52" y="32" class="logo-text-france">FRANCE</text>
+                </svg>
+            </div>
+            <div class="loader-bar-track">
+                <div class="loader-bar-fill" id="loaderBar"></div>
+            </div>
+            <p class="loader-status" id="loaderStatus">Chargement des données...</p>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SIDEBAR NAVIGATION -->
+    <!-- ============================================================ -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-plane"></i>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-air">AIR</span>
+                    <span class="logo-france">FRANCE</span>
+                    <span class="logo-sub">Analytics Platform</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-menu">
+            <div class="menu-section-label">TABLEAU DE BORD</div>
+            <a href="#" class="nav-item active" data-page="overview">
+                <i class="fas fa-th-large"></i>
+                <span>Vue d'ensemble</span>
+            </a>
+            <a href="#" class="nav-item" data-page="network">
+                <i class="fas fa-globe-europe"></i>
+                <span>Réseau & Routes</span>
+            </a>
+
+            <div class="menu-section-label">OPÉRATIONS</div>
+            <a href="#" class="nav-item" data-page="fleet">
+                <i class="fas fa-plane-departure"></i>
+                <span>Flotte & Avion 3D</span>
+            </a>
+            <a href="#" class="nav-item" data-page="operations">
+                <i class="fas fa-clock"></i>
+                <span>Ponctualité</span>
+            </a>
+
+            <div class="menu-section-label">BUSINESS</div>
+            <a href="#" class="nav-item" data-page="revenue">
+                <i class="fas fa-chart-line"></i>
+                <span>Revenus & Yield</span>
+            </a>
+            <a href="#" class="nav-item" data-page="satisfaction">
+                <i class="fas fa-star"></i>
+                <span>Satisfaction Client</span>
+            </a>
+
+            <div class="menu-section-label">DURABILITÉ</div>
+            <a href="#" class="nav-item" data-page="environment">
+                <i class="fas fa-leaf"></i>
+                <span>Empreinte Carbone</span>
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+                <span>Mode sombre</span>
+            </div>
+            <div class="sidebar-credits">
+                <span>Data Analytics Portfolio</span>
+                <span class="credit-year">2025</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============================================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================================ -->
+    <main id="mainContent">
+
+        <!-- TOP BAR -->
+        <header id="topbar">
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="topbar-title">
+                <h1 id="pageTitle">Vue d'ensemble</h1>
+                <span class="topbar-breadcrumb" id="pageBreadcrumb">Tableau de bord > Vue d'ensemble</span>
+            </div>
+            <div class="topbar-actions">
+                <div class="filter-group">
+                    <label>Période</label>
+                    <select id="filterYear">
+                        <option value="all">Toutes les années</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Courrier</label>
+                    <select id="filterCourrier">
+                        <option value="all">Tous</option>
+                        <option value="Court-courrier">Court-courrier</option>
+                        <option value="Moyen-courrier">Moyen-courrier</option>
+                        <option value="Long-courrier">Long-courrier</option>
+                    </select>
+                </div>
+                <div class="topbar-live">
+                    <span class="live-dot"></span>
+                    <span>Données temps réel</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ============================================================ -->
+        <!-- PAGE: OVERVIEW -->
+        <!-- ============================================================ -->
+        <section id="page-overview" class="page active">
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card kpi-premium" id="kpi-vols">
+                    <div class="kpi-icon"><i class="fas fa-plane"></i></div>
+                    <div class="kpi-body">
+                        <span class="kpi-value" data-counter="0">—</span>
+                        <span class="kpi-label">Vols opérés</span>
+                    </div>
+                    <div class="kpi-trend up"><i class="fas fa-arrow-up"></i> <span>+4.2%</span></div>
+                    <div class="kpi-sparkline" id="spark-vols"></div>
+                </div>
+                <div class="kpi-card" id="kpi-pax">
+                    <div class="kpi-icon"><i class="fas fa-users"></i></div>
+                    <div class="kpi-body">
+                        <span class="kpi-value">—</span>
+                        <span class="kpi-label">Passagers transportés</span>
+                    </div>
+                    <div class="kpi-trend up"><i class="fas fa-arrow-up"></i> <span>+6.1%</span></div>
+                    <div class="kpi-sparkline" id="spark-pax"></div>
+                </div>
+                <div class="kpi-card" id="kpi-revenue">
+                    <div class="kpi-icon"><i class="fas fa-euro-sign"></i></div>
+                    <div class="kpi-body">
+                        <span class="kpi-value">—</span>
+                        <span class="kpi-label">Chiffre d'affaires</span>
+                    </div>
+                    <div class="kpi-trend up"><i class="fas fa-arrow-up"></i> <span>+8.3%</span></div>
+                    <div class="kpi-sparkline" id="spark-rev"></div>
+                </div>
+                <div class="kpi-card" id="kpi-otp">
+                    <div class="kpi-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="kpi-body">
+                        <span class="kpi-value">—</span>
+                        <span class="kpi-label">Ponctualité (OTP)</span>
+                    </div>
+                    <div class="kpi-trend down"><i class="fas fa-arrow-down"></i> <span>-1.2%</span></div>
+                    <div class="kpi-sparkline" id="spark-otp"></div>
+                </div>
+                <div class="kpi-card" id="kpi-load">
+                    <div class="kpi-icon"><i class="fas fa-chair"></i></div>
+                    <div class="kpi-body">
+                        <span class="kpi-value">—</span>
+                        <span class="kpi-label">Taux de remplissage</span>
+                    </div>
+                    <div class="kpi-trend up"><i class="fas fa-arrow-up"></i> <span>+2.1%</span></div>
+                    <div class="kpi-sparkline" id="spark-load"></div>
+                </div>
+                <div class="kpi-card" id="kpi-co2">
+                    <div class="kpi-icon"><i class="fas fa-leaf"></i></div>
+                    <div class="kpi-body">
+                        <span class="kpi-value">—</span>
+                        <span class="kpi-label">CO₂ par passager·km</span>
+                    </div>
+                    <div class="kpi-trend down"><i class="fas fa-arrow-down"></i> <span>-3.7%</span></div>
+                    <div class="kpi-sparkline" id="spark-co2"></div>
+                </div>
+            </div>
+
+            <!-- Row 1: Charts -->
+            <div class="chart-row two-thirds">
+                <div class="chart-card large">
+                    <div class="chart-header">
+                        <h3>Évolution mensuelle des vols et passagers</h3>
+                        <div class="chart-actions">
+                            <button class="chart-btn active" data-metric="vols">Vols</button>
+                            <button class="chart-btn" data-metric="pax">Passagers</button>
+                            <button class="chart-btn" data-metric="revenue">Revenus</button>
+                        </div>
+                    </div>
+                    <div class="chart-body" id="chart-monthly-trend"></div>
+                </div>
+                <div class="chart-card small">
+                    <div class="chart-header">
+                        <h3>Répartition par courrier</h3>
+                    </div>
+                    <div class="chart-body" id="chart-courrier-donut"></div>
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="chart-row halves">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Top 10 destinations (passagers)</h3>
+                    </div>
+                    <div class="chart-body" id="chart-top-destinations"></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Performance par continent</h3>
+                    </div>
+                    <div class="chart-body" id="chart-continent-perf"></div>
+                </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="chart-row halves">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Heatmap — Vols par jour et heure</h3>
+                    </div>
+                    <div class="chart-body" id="chart-heatmap-flights"></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Taux de remplissage mensuel par courrier</h3>
+                    </div>
+                    <div class="chart-body" id="chart-load-factor"></div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- PAGE: NETWORK -->
+        <!-- ============================================================ -->
+        <section id="page-network" class="page">
+
+            <div class="kpi-grid small-grid">
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="net-destinations">—</span>
+                        <span class="kpi-label">Destinations</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="net-routes">—</span>
+                        <span class="kpi-label">Routes actives</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="net-countries">—</span>
+                        <span class="kpi-label">Pays desservis</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="net-avg-dist">—</span>
+                        <span class="kpi-label">Distance moy. (km)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Globe 3D -->
+            <div class="chart-card full-width globe-card">
+                <div class="chart-header">
+                    <h3><i class="fas fa-globe"></i> Réseau mondial Air France — Carte interactive</h3>
+                    <div class="chart-actions">
+                        <button class="chart-btn active" data-map="routes">Routes</button>
+                        <button class="chart-btn" data-map="traffic">Trafic</button>
+                        <button class="chart-btn" data-map="hubs">Hubs</button>
+                    </div>
+                </div>
+                <div class="chart-body globe-container" id="chart-world-map"></div>
+            </div>
+
+            <div class="chart-row halves">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Trafic par continent</h3>
+                    </div>
+                    <div class="chart-body" id="chart-traffic-continent"></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Distances des routes (distribution)</h3>
+                    </div>
+                    <div class="chart-body" id="chart-distance-dist"></div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- PAGE: FLEET -->
+        <!-- ============================================================ -->
+        <section id="page-fleet" class="page">
+
+            <div class="kpi-grid small-grid">
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="fleet-total">—</span>
+                        <span class="kpi-label">Avions en flotte</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="fleet-types">—</span>
+                        <span class="kpi-label">Types d'appareils</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="fleet-avg-age">—</span>
+                        <span class="kpi-label">Âge moyen (ans)</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="fleet-seats">—</span>
+                        <span class="kpi-label">Sièges totaux</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3D Aircraft Viewer -->
+            <div class="chart-card full-width aircraft-card">
+                <div class="chart-header">
+                    <h3><i class="fas fa-cube"></i> Modèle 3D — Sélectionnez un appareil</h3>
+                    <div class="aircraft-selector">
+                        <select id="aircraftSelect">
+                            <option value="a350">Airbus A350-900</option>
+                            <option value="b777">Boeing 777-300ER</option>
+                            <option value="a320">Airbus A320</option>
+                            <option value="b787">Boeing 787-9</option>
+                            <option value="a330">Airbus A330-200</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="aircraft-viewer-container">
+                    <div class="aircraft-3d" id="aircraft3d"></div>
+                    <div class="aircraft-specs" id="aircraftSpecs">
+                        <div class="spec-card">
+                            <div class="spec-icon"><i class="fas fa-ruler"></i></div>
+                            <div class="spec-info">
+                                <span class="spec-value" id="spec-range">15 000 km</span>
+                                <span class="spec-label">Autonomie</span>
+                            </div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-icon"><i class="fas fa-chair"></i></div>
+                            <div class="spec-info">
+                                <span class="spec-value" id="spec-seats">324</span>
+                                <span class="spec-label">Sièges</span>
+                            </div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-icon"><i class="fas fa-cog"></i></div>
+                            <div class="spec-info">
+                                <span class="spec-value" id="spec-engine">Trent XWB</span>
+                                <span class="spec-label">Motorisation</span>
+                            </div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-icon"><i class="fas fa-hashtag"></i></div>
+                            <div class="spec-info">
+                                <span class="spec-value" id="spec-count">18</span>
+                                <span class="spec-label">En flotte</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-row halves">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Composition de la flotte</h3>
+                    </div>
+                    <div class="chart-body" id="chart-fleet-comp"></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Pyramide des âges de la flotte</h3>
+                    </div>
+                    <div class="chart-body" id="chart-fleet-age"></div>
+                </div>
+            </div>
+
+            <div class="chart-row halves">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Utilisation par type d'appareil (vols/mois)</h3>
+                    </div>
+                    <div class="chart-body" id="chart-fleet-utilization"></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Famille Narrow-body vs Wide-body</h3>
+                    </div>
+                    <div class="chart-body" id="chart-fleet-family"></div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- PAGE: OPERATIONS -->
+        <!-- ============================================================ -->
+        <section id="page-operations" class="page">
+
+            <div class="kpi-grid small-grid">
+                <div class="kpi-card mini kpi-green">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="ops-otp15">—</span>
+                        <span class="kpi-label">OTP (&lt;15 min)</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="ops-avg-delay">—</span>
+                        <span class="kpi-label">Retard moyen (min)</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini kpi-red">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="ops-cancel">—</span>
+                        <span class="kpi-label">Taux d'annulation</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="ops-completion">—</span>
+                        <span class="kpi-label">Taux de complétion</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-row halves">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Ponctualité mensuelle</h3>
+                    </div>
+                    <div class="chart-body" id="chart-otp-monthly"></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Causes de retard</h3>
+                    </div>
+                    <div class="chart-body" id="chart-delay-causes"></div>
+                </div>
+            </div>
+
+            <div class="chart-row halves">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Distribution des retards</h3>
+                    </div>
+                    <div class="chart-body" id="chart-delay-distribution"></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Ponctualité par type d'appareil</h3>
+                    </div>
+                    <div class="chart-body" id="chart-otp-aircraft"></div>
+                </div>
+            </div>
+
+            <div class="chart-card full-width">
+                <div class="chart-header">
+                    <h3>Heatmap — Retard moyen par heure et jour de la semaine</h3>
+                </div>
+                <div class="chart-body" id="chart-delay-heatmap"></div>
+            </div>
+
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- PAGE: REVENUE -->
+        <!-- ============================================================ -->
+        <section id="page-revenue" class="page">
+
+            <div class="kpi-grid small-grid">
+                <div class="kpi-card mini kpi-gold">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="rev-total">—</span>
+                        <span class="kpi-label">CA Total (M€)</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="rev-yield">—</span>
+                        <span class="kpi-label">Yield (c€/RPK)</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="rev-rask">—</span>
+                        <span class="kpi-label">RASK (c€/ASK)</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="rev-perpax">—</span>
+                        <span class="kpi-label">Revenu moy./pax (€)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-row two-thirds">
+                <div class="chart-card large">
+                    <div class="chart-header">
+                        <h3>Évolution du chiffre d'affaires mensuel</h3>
+                    </div>
+                    <div class="chart-body" id="chart-revenue-monthly"></div>
+                </div>
+                <div class="chart-card small">
+                    <div class="chart-header">
+                        <h3>CA par courrier</h3>
+                    </div>
+                    <div class="chart-body" id="chart-revenue-courrier"></div>
+                </div>
+            </div>
+
+            <div class="chart-row halves">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Yield par continent (c€/RPK)</h3>
+                    </div>
+                    <div class="chart-body" id="chart-yield-continent"></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Revenu moyen par vol et distance</h3>
+                    </div>
+                    <div class="chart-body" id="chart-revenue-scatter"></div>
+                </div>
+            </div>
+
+            <div class="chart-card full-width">
+                <div class="chart-header">
+                    <h3>Top 15 routes les plus rentables</h3>
+                </div>
+                <div class="chart-body" id="chart-top-routes-revenue"></div>
+            </div>
+
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- PAGE: SATISFACTION -->
+        <!-- ============================================================ -->
+        <section id="page-satisfaction" class="page">
+
+            <div class="kpi-grid small-grid">
+                <div class="kpi-card mini kpi-gold">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="sat-global">—</span>
+                        <span class="kpi-label">Note globale /10</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="sat-nps">—</span>
+                        <span class="kpi-label">NPS Score</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini kpi-green">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="sat-recommend">—</span>
+                        <span class="kpi-label">Recommandation</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="sat-surveys">—</span>
+                        <span class="kpi-label">Enquêtes collectées</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-row halves">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Radar — Notes par critère</h3>
+                    </div>
+                    <div class="chart-body" id="chart-sat-radar"></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Distribution NPS</h3>
+                    </div>
+                    <div class="chart-body" id="chart-nps-dist"></div>
+                </div>
+            </div>
+
+            <div class="chart-row halves">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Satisfaction par classe de voyage</h3>
+                    </div>
+                    <div class="chart-body" id="chart-sat-class"></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Satisfaction par programme de fidélité</h3>
+                    </div>
+                    <div class="chart-body" id="chart-sat-fidelity"></div>
+                </div>
+            </div>
+
+            <div class="chart-row halves">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Évolution mensuelle de la satisfaction</h3>
+                    </div>
+                    <div class="chart-body" id="chart-sat-trend"></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Satisfaction par type de voyageur</h3>
+                    </div>
+                    <div class="chart-body" id="chart-sat-traveler"></div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- PAGE: ENVIRONMENT -->
+        <!-- ============================================================ -->
+        <section id="page-environment" class="page">
+
+            <div class="kpi-grid small-grid">
+                <div class="kpi-card mini kpi-green">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="env-total-co2">—</span>
+                        <span class="kpi-label">CO₂ total (kT)</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="env-co2-paxkm">—</span>
+                        <span class="kpi-label">g CO₂/pax·km</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="env-fuel-total">—</span>
+                        <span class="kpi-label">Carburant total (ML)</span>
+                    </div>
+                </div>
+                <div class="kpi-card mini">
+                    <div class="kpi-body">
+                        <span class="kpi-value" id="env-fuel-paxkm">—</span>
+                        <span class="kpi-label">L carburant/pax·km</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-row halves">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Émissions CO₂ mensuelles</h3>
+                    </div>
+                    <div class="chart-body" id="chart-co2-monthly"></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Efficacité carbone par type d'appareil</h3>
+                    </div>
+                    <div class="chart-body" id="chart-co2-aircraft"></div>
+                </div>
+            </div>
+
+            <div class="chart-row halves">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Consommation par courrier</h3>
+                    </div>
+                    <div class="chart-body" id="chart-fuel-courrier"></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Intensité carbone vs distance</h3>
+                    </div>
+                    <div class="chart-body" id="chart-co2-scatter"></div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/aircraft3d.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>
